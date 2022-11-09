@@ -23,6 +23,7 @@ import (
 
 	porchv1alpha1 "github.com/GoogleContainerTools/kpt/porch/api/porch/v1alpha1"
 	"github.com/go-logr/logr"
+	"github.com/henderiw-nephio/nad-injector-controller/pkg/infra"
 	"github.com/henderiw-nephio/nad-injector-controller/pkg/injector"
 	"github.com/henderiw-nephio/nad-injector-controller/pkg/injectors"
 	"github.com/henderiw-nephio/nad-injector-controller/pkg/nad"
@@ -39,7 +40,6 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"github.com/henderiw-nephio/nad-injector-controller/pkg/infra"
 )
 
 const (
@@ -185,7 +185,7 @@ func (r *reconciler) injectNADs(ctx context.Context, namespacedName types.Namesp
 		if rn.GetApiVersion() == "infra.nephio.org/v1alpha1" && rn.GetKind() == "ClusterContext" {
 			cniType = infra.GetCniType(rn)
 			masterInterface = infra.GetMasterInterface(rn)
-			
+
 		}
 		if rn.GetApiVersion() == "infra.nephio.org/v1alpha1" && rn.GetKind() == "UpfClass" {
 			namespace = rn.GetNamespace()

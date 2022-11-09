@@ -19,34 +19,35 @@ type Config struct {
 
 func GetNadRnode(c *Config) (*kyaml.RNode, error) {
 	var nadTemplate = `apiVersion: "k8s.cni.cncf.io/v1"
-	kind: NetworkAttachmentDefinition
-	metadata:
-		name: {{.Name}}
-		namespace: {{.Namespace}}
-	spec:
-		config: '{
-				"cniVersion": {{.CniVersion}},
-				"plugins": [
-					{
-						"type": {{.CniType}},
-						"capabilities": { "ips": true },
-						"master": {{.Master}},
-						"mode": "bridge",
-						"ipam": {
-							"type": "static",
-							"routes": [
-								{
-									"dst": "0.0.0.0/0",
-									"gw": {{.Gateway}}
-								}
-							]
-						}
-					}, {
-						"capabilities": { "mac": true },
-						"type": "tuning"
-					}
-				]
-			}'`
+kind: NetworkAttachmentDefinition
+metadata:
+  name: {{.Name}}
+  namespace: {{.Namespace}}
+spec:
+  config: '{
+		"cniVersion": {{.CniVersion}},
+	"plugins": [
+		{
+			"type": {{.CniType}},
+			"capabilities": { "ips": true },
+			"master": {{.Master}},
+			"mode": "bridge",
+			"ipam": {
+			"type": "static",
+			"routes": [
+				{
+					"dst": "0.0.0.0/0",
+					"gw": {{.Gateway}}
+				}
+			]
+		}
+		}, {
+				"capabilities": { "mac": true },
+				"type": "tuning"
+		}
+	]
+	}'
+`
 
 	tmpl, err := template.New("nad").Parse(nadTemplate)
 	if err != nil {
